@@ -1,0 +1,23 @@
+code: |-
+  (coin.rotate "{{{acct}}}" (read-keyset "ks"))
+  (enforce-guard (at "guard" (coin.details "{{{acct}}}")))
+data:
+  ks: 
+    pred: "keys-all"
+    keys:
+      - {{{new-key}}}
+publicMeta:
+  chainId: "{{chain}}"
+  sender: {{{acct}}}
+  gasLimit: 2300
+  gasPrice: 0.000001
+  ttl: 600
+networkId: {{network}}
+signers:
+  - public: {{from-key}}
+    caps:
+      - name: "coin.ROTATE"
+        args: ["{{{acct}}}"]
+      - name: "coin.GAS"
+        args: []
+type: exec
