@@ -1,0 +1,30 @@
+# This transaction is safe because the receiver sends a small amount back
+# which requires the receiver to sign and guarantees that they have the
+# correct private key.
+code: |-
+  (coin.transfer-create "{{{from-acct}}}" "{{{to-acct}}}" (read-keyset "ks") {{amount-out}})
+  (coin.transfer "{{{to-acct}}}" "{{{from-acct}}}" {{amount-back}})
+data:
+  ks: 
+    pred: "keys-all"
+    keys:
+      - {{{to-key}}}
+publicMeta:
+  chainId: "{{chain}}"
+  sender: {{{from-acct}}}
+  gasLimit: 4600
+  gasPrice: 0.000001
+  ttl: 600
+networkId: {{network}}
+signers:
+  - public: {{from-key}}
+    caps:
+      - name: "coin.TRANSFER"
+        args: [{{{from-acct}}}, {{{to-acct}}}, {{amount-out}}]
+      - name: "coin.GAS"
+        args: []
+  - public: {{to-key}}
+    caps:
+      - name: "coin.TRANSFER"
+        args: [{{{to-acct}}}, {{{from-acct}}}, {{amount-back}}]
+type: exec

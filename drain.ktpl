@@ -1,0 +1,23 @@
+code: |-
+  (coin.transfer "{{{from-acct}}}" "{{{to-acct}}}" (coin.get-balance "{{{from-acct}}}"))
+data:
+publicMeta:
+  chainId: "{{chain}}"
+
+  # In order to drain an account without leaving any dust, the receiver pays
+  # the gas.
+  sender: {{{to-acct}}}
+  gasLimit: 2300
+  gasPrice: 0.000001
+  ttl: 600
+networkId: {{network}}
+signers:
+  - public: {{from-key}}
+    caps:
+      - name: "coin.TRANSFER"
+        args: [{{{from-acct}}}, {{{to-acct}}}, {{amount}}]
+  - public: {{to-key}}
+    caps:
+      - name: "coin.GAS"
+        args: []
+type: exec
